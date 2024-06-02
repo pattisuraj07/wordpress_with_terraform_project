@@ -7,9 +7,6 @@ variable "this_instance_type" {
 variable "cidr_block" {
   type = string
 }
-variable "eks_node_public_ips" {
-  type = string
-}
 variable "backend_server_ip" {
   type = string
 }
