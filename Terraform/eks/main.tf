@@ -85,9 +85,10 @@ resource "aws_eks_node_group" "eks_node_group" {
   }
 }
 
-output "eks_worker_node_ip" {
-  value = [aws_eks_node_group.eks_node_group.node_public_ip]
+output "elastic_ip" {
+  value = aws_eip.eks_node_eip.public_ip
 }
+
 
 
 provider "kubernetes" {
