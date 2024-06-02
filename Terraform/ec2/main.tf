@@ -49,7 +49,7 @@ resource "aws_instance" "proxy_instance" {
               git clone https://github.com/aakashshinde09/wordpress-site.git
               rm -rf /etc/nginx/nginx.conf
               cp wordpress-site/Terraform/nginx.conf /etc/nginx/
-              sed -i "s/backend_server_placeholder/${aws_eip.eks_node_eip.public_ip}/" /etc/nginx/nginx.conf
+              sed -i "s/\${backend_server_ip}/${var.backend_server_ip}/" /etc/nginx/nginx.conf
               systemctl restart nginx
               EOF
 
@@ -60,8 +60,6 @@ resource "aws_instance" "proxy_instance" {
 
 resource "aws_eip" "eks_node_eip" {
   instance = aws_instance.proxy_instance.id
-  allocation_id = "eipalloc-07758d551a6977a08" // Replace with your allocation ID
-  public_ip     = "100.28.135.57"     // Replace with your public IP address
 }
 
 output "elastic_ip" {

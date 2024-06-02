@@ -78,6 +78,7 @@ resource "aws_eks_node_group" "eks_node_group" {
   node_group_name = var.node_group_name
   node_role_arn = data.aws_iam_role.eks_node_group_role.arn
   subnet_ids      = [data.aws_subnet.subnet1.id, data.aws_subnet.subnet2.id]
+  
    scaling_config {
     desired_size = 1
     max_size     = 1
