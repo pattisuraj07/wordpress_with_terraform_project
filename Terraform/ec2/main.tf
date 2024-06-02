@@ -59,5 +59,5 @@ output "elastic_ip" {
 }
 
 module "eks" {
-  source = "../eks"
+  source = "terraform/eks"
 }

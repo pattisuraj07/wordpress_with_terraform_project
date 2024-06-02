@@ -13,6 +13,7 @@ module "eks" {
   node_group_name = "my-node"
   eks_node_group_role = "Node-role"
   region = "us-east-1"
+
 }
 
 module "ec2" {
