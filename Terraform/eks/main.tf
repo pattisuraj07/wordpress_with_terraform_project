@@ -90,6 +90,11 @@ resource "aws_eks_node_group" "eks_node_group" {
   
 }
 
+output "eks_worker_node_ip" {
+  value = aws_eks_node_group.eks_node_group.node_public_ips[0]  # Assuming only one node for simplicity
+}
+
+
 data "aws_eks_cluster" "eks_cluster" {
   name = var.eks_cluster_name
 }

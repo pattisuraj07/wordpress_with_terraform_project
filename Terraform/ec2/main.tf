@@ -35,23 +35,15 @@ description = "Security group for our proxy"
   }
 }
 resource "aws_instance" "proxy_instance" {
-  ami = var.this_instance_ami
-  instance_type = var.this_instance_type
-  key_name = aws_key_pair.akash_key.key_name
+  ami                    = var.this_instance_ami
+  instance_type          = var.this_instance_type
+  key_name               = aws_key_pair.akash_key.key_name
   vpc_security_group_ids = [aws_security_group.proxy_sg.id]
 
-# This is same when we were using user data while creating instance manually
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo su
-              yum install nginx -y
-              systemctl enable --now nginx
-              git clone https://github.com/aakashshinde09/wordpress-site.git
-              rm -rf /etc/nginx/nginx.conf
-              cp wordpress-site/Terraform/nginx.conf /etc/nginx/
-              sed -i "s/\${backend_server_ip}/${var.backend_server_ip}/" /etc/nginx/nginx.conf
-              systemctl restart nginx
-              EOF
+  # Pass the EKS worker node IP address to the EC2 instance
+  user_data = templatefile("${path.module}/user_data.tpl", {
+    eks_worker_node_ip = module.eks.eks_worker_node_ip
+  })
 
   tags = {
     Name = "proxy-instance"
