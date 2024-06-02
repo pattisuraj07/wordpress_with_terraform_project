@@ -7,6 +7,3 @@ variable "this_instance_type" {
 variable "cidr_block" {
   type = string
 }
-variable "backend_server_ip" {
-  type = string
-}

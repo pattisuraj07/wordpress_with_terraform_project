@@ -15,22 +15,26 @@ resource "aws_security_group" "proxy_sg" {
     cidr_blocks = [var.cidr_block]
   }
 
-  # Restrict inbound and outbound traffic based on your application's needs
-  # (consider removing all traffic rules and adding specific ones)
-  # Example: Allow inbound web traffic (port 80) from anywhere
-  # ingress {
-  #   from_port = 80
-  #   to_port = 80
-  #   protocol = "tcp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "tcp"
+    cidr_blocks = [var.cidr_block]
+  }
 
-  # egress {
-  #   from_port = 0
-  #   to_port = 0
-  #   protocol = "-1"
-  #   cidr_blocks = [var.cidr_block]
-  # }
+  ingress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [var.cidr_block]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [var.cidr_block]
+  }
 }
 
 resource "aws_instance" "proxy_instance" {
@@ -50,11 +54,4 @@ resource "aws_instance" "proxy_instance" {
   }
 }
 
-resource "aws_eip" "eks_node_eip" {
-  # This might not be necessary if worker nodes already have public IPs
-  instance = aws_instance.proxy_instance.id
-}
 
-output "eks_elastic_ip" {
-  value = aws_eip.eks_node_eip.public_ip  # Output might be empty if not allocated
-}

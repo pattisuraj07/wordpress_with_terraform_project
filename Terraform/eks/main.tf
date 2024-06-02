@@ -4,13 +4,6 @@ data "aws_iam_role" "eks_node_group_role" {
   name = var.eks_node_group_role
 }
 
-resource "aws_eip" "eks_node_eip" {
-  instance = aws_instance.proxy_instance.id
-}
-
-output "elastic_ip" {
-  value = aws_eip.eks_node_eip.public_ip
-}
 
 data "aws_vpc" "default" {
   default = var.vpc

@@ -19,5 +19,5 @@ module "ec2" {
   source = "./ec2"
   this_instance_ami = "ami-00beae93a2d981137"
   this_instance_type = "t2.micro"
-  cidr_block = "0.0.0.0/0" # Consider using a more specific CIDR block for security
+  cidr_block = "0.0.0.0/0" 
 }
