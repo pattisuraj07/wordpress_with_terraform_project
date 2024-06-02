@@ -57,7 +57,3 @@ resource "aws_eip" "eks_node_eip" {
 output "elastic_ip" {
   value = aws_eip.eks_node_eip.public_ip
 }
-
-module "eks" {
-  source = "./terraform/eks"
-}
