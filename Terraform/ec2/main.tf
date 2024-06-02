@@ -43,11 +43,16 @@ resource "aws_instance" "proxy_instance" {
   key_name = aws_key_pair.akash_key.key_name
   vpc_security_group_ids = [aws_security_group.proxy_sg.id]
 
-  # Pass the EKS worker node's PUBLIC IP address to the EC2 instance
-  user_data = templatefile("${path.module}/user_data.tpl", {
-    # Assuming the eks module provides an attribute for public IP (verify the name)
-    eks_worker_node_public_ip = module.eks.worker_node_public_ip
-  })
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo su
+              yum install nginx -y
+              systemctl enable --now nginx
+              git clone https://github.com/aakashshinde09/wordpress-site.git
+              rm -rf /etc/nginx/nginx.conf
+              cp wordpress-site/Terraform/nginx.conf /etc/nginx/
+              systemctl restart nginx
+              EOF
 
   tags = {
     Name = "proxy-instance"
