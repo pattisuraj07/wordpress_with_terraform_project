@@ -1,3 +1,17 @@
+# Your eks module configuration...
+
+data "aws_iam_role" "eks_node_group_role" {
+  name = var.eks_node_group_role
+}
+
+resource "aws_eip" "eks_node_eip" {
+  instance = aws_instance.proxy_instance.id
+}
+
+output "elastic_ip" {
+  value = aws_eip.eks_node_eip.public_ip
+}
+
 data "aws_vpc" "default" {
   default = var.vpc
 }
@@ -54,9 +68,7 @@ resource "aws_security_group" "eks_sg" {
   }
 }
 
-data "aws_iam_role" "eks_role" {
-  name = var.eks_role
-}
+
 
 resource "aws_eks_cluster" "eks_cluster" {
   name     = var.eks_cluster_name
@@ -85,9 +97,6 @@ resource "aws_eks_node_group" "eks_node_group" {
   }
 }
 
-output "elastic_ip" {
-  value = aws_eip.eks_node_eip.public_ip
-}
 
 
 
