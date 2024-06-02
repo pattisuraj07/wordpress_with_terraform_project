@@ -126,3 +126,7 @@ resource "null_resource" "deploy_application" {
     EOT
   }
 }
+
+output "elastic_ip" {
+  value = aws_eip.eks_node_eip.public_ip
+}
