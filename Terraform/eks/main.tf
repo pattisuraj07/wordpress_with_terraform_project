@@ -127,6 +127,10 @@ resource "null_resource" "deploy_application" {
   }
 }
 
+resource "aws_eip" "eks_node_eip" {
+  instance = aws_instance.proxy_instance.id
+}
+
 output "elastic_ip" {
   value = aws_eip.eks_node_eip.public_ip
 }
