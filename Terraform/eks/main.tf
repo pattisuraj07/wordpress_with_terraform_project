@@ -73,6 +73,11 @@ resource "aws_eks_cluster" "eks_cluster" {
   }
 }
 
+data "aws_iam_role" "eks_role" {
+  name = var.eks_role  # Replace with the actual role name
+}
+
+
 resource "aws_eks_node_group" "eks_node_group" {
   cluster_name    = aws_eks_cluster.eks_cluster.name
   node_group_name = var.node_group_name
@@ -102,10 +107,6 @@ provider "kubernetes" {
     command     = "aws"
     args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.eks_cluster.name]
   }
-}
-
-data "aws_eks_cluster_auth" "auth" {
-  name = aws_eks_cluster.eks_cluster.name
 }
 
 resource "null_resource" "deploy_application" {
