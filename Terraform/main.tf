@@ -20,5 +20,5 @@ module "ec2" {
   this_instance_ami = "ami-00beae93a2d981137"
   this_instance_type = "t2.micro"
   cidr_block = "0.0.0.0/0"
-  eks_node_public_ips  = module.eks.elastic_ip
+  backend_server_ip = module.eks.elastic_ip
 }
