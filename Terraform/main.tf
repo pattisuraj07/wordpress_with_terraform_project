@@ -20,4 +20,5 @@ module "ec2" {
   this_instance_ami = "ami-00beae93a2d981137"
   this_instance_type = "t2.micro"
   cidr_block = "0.0.0.0/0" 
+  key_name = "kind"
 }

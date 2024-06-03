@@ -1,8 +1,3 @@
-resource "aws_key_pair" "akash_key" {
-  key_name = "akash-key"
-  public_key = file("~/.ssh/authorized_keys")
-}
-
 resource "aws_security_group" "proxy_sg" {
   name = "proxy-sg"
   description = "Security Group for our proxy"
@@ -40,7 +35,7 @@ resource "aws_security_group" "proxy_sg" {
 resource "aws_instance" "proxy_instance" {
   ami = var.this_instance_ami
   instance_type = var.this_instance_type
-  key_name = aws_key_pair.akash_key.key_name
+  key_name = var.key_name
   vpc_security_group_ids = [aws_security_group.proxy_sg.id]
 
   user_data = <<-EOF

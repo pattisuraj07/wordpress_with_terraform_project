@@ -7,3 +7,6 @@ variable "this_instance_type" {
 variable "cidr_block" {
   type = string
 }
+variable "key_name" {
+  type = string
+}
