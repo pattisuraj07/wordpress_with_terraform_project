@@ -7,7 +7,7 @@ module "eks" {
   vpc = true
   subnet1_val = "us-east-1a"
   subnet2_val = "us-east-1b"
-  cidr_blocks_eks = "0.0.0.0/0" # Consider using a more specific CIDR block for security
+  cidr_blocks_eks = "0.0.0.0/0" 
   eks_cluster_name = "my-cluster"
   eks_role = "EKS-Role"
   node_group_name = "my-node"

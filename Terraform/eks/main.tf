@@ -74,7 +74,7 @@ resource "aws_eks_cluster" "eks_cluster" {
 }
 
 data "aws_iam_role" "eks_role" {
-  name = var.eks_role  # Replace with the actual role name
+  name = var.eks_role  
 }
 
 
@@ -91,7 +91,7 @@ resource "aws_eks_node_group" "eks_node_group" {
   }
 
   tags = {
-    Name = "${var.node_group_name}-node"
+    Name = var.node_group_name
   }
 }
 
@@ -109,16 +109,3 @@ provider "kubernetes" {
   }
 }
 
-resource "null_resource" "deploy_application" {
-  depends_on = [aws_eks_node_group.eks_node_group]
-
-  provisioner "local-exec" {
-    command = <<-EOT
-      aws eks update-kubeconfig --name ${aws_eks_cluster.eks_cluster.name} --region ${var.region}
-      git clone https://github.com/aakashshinde09/wordpress_with_terraform_project.git
-      cd wordpress_with_terraform_project
-      cd kubernetes
-      kubectl apply -f .
-    EOT
-  }
-}

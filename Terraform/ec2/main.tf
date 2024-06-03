@@ -48,10 +48,8 @@ resource "aws_instance" "proxy_instance" {
               sudo su
               yum install nginx -y
               systemctl enable --now nginx
+              yum install git -y
               git clone https://github.com/aakashshinde09/wordpress-site.git
-              rm -rf /etc/nginx/nginx.conf
-              cp wordpress-site/Terraform/nginx.conf /etc/nginx/
-              systemctl restart nginx
               EOF
 
   tags = {
