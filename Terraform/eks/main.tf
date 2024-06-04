@@ -135,15 +135,15 @@ resource "aws_eks_addon" "eks_pod_identity_agent" {
   addon_version  = "v1.2.0-eksbuild.1"
 }
 
-# Adding necessary tags
-resource "aws_ec2_tag" "environment_tag" {
-  resource_id = aws_eks_cluster.eks_cluster.id
-  key         = "Environment"
-  value       = "dev"
-}
+# # Adding necessary tags
+# resource "aws_ec2_tag" "environment_tag" {
+#   resource_id = aws_eks_cluster.eks_cluster.id
+#   key         = "Environment"
+#   value       = "dev"
+# }
 
-resource "aws_ec2_tag" "terraform_tag" {
-  resource_id = aws_eks_cluster.eks_cluster.id
-  key         = "Terraform"
-  value       = "true"
-}
+# resource "aws_ec2_tag" "terraform_tag" {
+#   resource_id = aws_eks_cluster.eks_cluster.id
+#   key         = "Terraform"
+#   value       = "true"
+# }
