@@ -83,27 +83,33 @@ resource "aws_eks_node_group" "eks_node_group" {
 # Retrieve the Auto Scaling Group associated with the node group
 data "aws_autoscaling_groups" "asg" {
   filter {
-    name   = "tag:eks:nodegroup-name"
+    name = "tag:eks:nodegroup-name"
     values = [aws_eks_node_group.eks_node_group.node_group_name]
   }
 }
 
+# Define a static map to hold instance names
+# Define the instance map outside the data source
+variable "instance_map" {
+  type = map(string)
+  default = {}
+}
+
 # Retrieve the instances in the Auto Scaling Group
 data "aws_instance" "eks_nodes" {
-  for_each = { for name in data.aws_autoscaling_groups.asg.names : name => name }
+  for_each = var.instance_map
 
   filter {
-    name   = "tag:aws:autoscaling:groupName"
+    name = "tag:aws:autoscaling:groupName"
     values = [each.value]
   }
 }
-
-
 
 # Output the public IP addresses of the instances
 output "eks_node_public_ips" {
   value = [for instance in data.aws_instance.eks_nodes : instance.public_ip]
 }
+
 
 # Adding cluster add-ons separately
 resource "aws_eks_addon" "coredns" {
