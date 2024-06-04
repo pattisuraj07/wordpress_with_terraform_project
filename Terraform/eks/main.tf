@@ -41,6 +41,13 @@ resource "aws_security_group" "eks_sg" {
     cidr_blocks = [var.cidr_blocks_eks]
   }
 
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "tcp"
+    cidr_blocks = [var.cidr_blocks_eks]
+  }
+
   # Outbound rule for all traffic
   egress {
     from_port   = 0
