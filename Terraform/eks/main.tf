@@ -90,13 +90,14 @@ data "aws_autoscaling_groups" "asg" {
 
 # Retrieve the instances in the Auto Scaling Group
 data "aws_instance" "eks_nodes" {
-  for_each = data.aws_autoscaling_groups.asg.names
+  for_each = { for name in data.aws_autoscaling_groups.asg.names : name => name }
 
   filter {
     name   = "tag:aws:autoscaling:groupName"
     values = [each.value]
   }
 }
+
 
 
 # Output the public IP addresses of the instances
