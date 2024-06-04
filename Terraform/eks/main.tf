@@ -154,3 +154,30 @@ resource "aws_eks_addon" "eks_pod_identity_agent" {
 #   key         = "Terraform"
 #   value       = "true"
 # }
+
+# Enable cluster creator admin permissions
+resource "aws_eks_cluster_auth" "cluster_auth" {
+  name             = aws_eks_cluster.eks_cluster.name
+  enable           = true
+  cluster_name     = aws_eks_cluster.eks_cluster.name
+  client_id        = "sts.amazonaws.com"
+  user_name        = "system:node:{{EC2PrivateDNSName}}"
+  groups           = ["system:masters"]
+  lifecycle {
+    ignore_changes = [client_id, user_name, groups]
+  }
+}
+
+# Add access permissions
+resource "aws_eks_cluster_extension" "example" {
+  cluster_name = aws_eks_cluster.eks_cluster.name
+
+  selector {
+    namespace = "default"
+  }
+
+  client_request_token = "example"
+  request_type         = "AssociateIAMOIDCIdentityProviderConfig"
+  response_type        = "AssociateIAMOIDCIdentityProviderConfigResponse"
+  version              = "v1beta1"
+}
