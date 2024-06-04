@@ -89,7 +89,6 @@ data "aws_autoscaling_groups" "asg" {
 }
 
 # Define a static map to hold instance names
-# Define the instance map outside the data source
 variable "instance_map" {
   type = map(string)
   default = {}
@@ -115,19 +114,25 @@ output "eks_node_public_ips" {
 resource "aws_eks_addon" "coredns" {
   cluster_name   = aws_eks_cluster.eks_cluster.name
   addon_name     = "coredns"
-  addon_version  = "v1.8.0-eksbuild.1"
+  addon_version  = "v1.11.1-eksbuild.4"
 }
 
 resource "aws_eks_addon" "kube_proxy" {
   cluster_name   = aws_eks_cluster.eks_cluster.name
   addon_name     = "kube-proxy"
-  addon_version  = "v1.19.6-eksbuild.1"
+  addon_version  = "v1.29.0-eksbuild.1"
 }
 
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name   = aws_eks_cluster.eks_cluster.name
   addon_name     = "vpc-cni"
-  addon_version  = "v1.7.5-eksbuild.1"
+  addon_version  = "v1.16.0-eksbuild.1"
+}
+
+resource "aws_eks_addon" "eks_pod_identity_agent" {
+  cluster_name   = aws_eks_cluster.eks_cluster.name
+  addon_name     = "eks-pod-identity-agent"
+  addon_version  = "v1.2.0-eksbuild.1"
 }
 
 # Adding necessary tags
