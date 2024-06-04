@@ -90,34 +90,32 @@ data "aws_autoscaling_groups" "asg" {
 
 # Retrieve the instances in the Auto Scaling Group
 data "aws_instance" "eks_nodes" {
-  for_each = flatten([for asg in data.aws_autoscaling_group.asg : asg.instances])
+  for_each = flatten([for asg in data.aws_autoscaling_groups.asg : asg.instances])
   instance_id = each.value.id
 }
 
 # Output the public IP addresses of the instances
 output "eks_node_public_ips" {
-  value = [for instance in data.aws_instances.eks_nodes.instances : instance.public_ip]
+  value = [for instance in data.aws_instance.eks_nodes : instance.public_ip]
 }
-
-
 
 # Adding cluster add-ons separately
 resource "aws_eks_addon" "coredns" {
-  cluster_name = aws_eks_cluster.eks_cluster.name
-  addon_name   = "coredns"
-  addon_version = "v1.8.0-eksbuild.1"
+  cluster_name   = aws_eks_cluster.eks_cluster.name
+  addon_name     = "coredns"
+  addon_version  = "v1.8.0-eksbuild.1"
 }
 
 resource "aws_eks_addon" "kube_proxy" {
-  cluster_name = aws_eks_cluster.eks_cluster.name
-  addon_name   = "kube-proxy"
-  addon_version = "v1.19.6-eksbuild.1"
+  cluster_name   = aws_eks_cluster.eks_cluster.name
+  addon_name     = "kube-proxy"
+  addon_version  = "v1.19.6-eksbuild.1"
 }
 
 resource "aws_eks_addon" "vpc_cni" {
-  cluster_name = aws_eks_cluster.eks_cluster.name
-  addon_name   = "vpc-cni"
-  addon_version = "v1.7.5-eksbuild.1"
+  cluster_name   = aws_eks_cluster.eks_cluster.name
+  addon_name     = "vpc-cni"
+  addon_version  = "v1.7.5-eksbuild.1"
 }
 
 # Adding necessary tags
